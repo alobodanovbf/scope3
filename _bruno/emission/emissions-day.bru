@@ -1,0 +1,17 @@
+meta {
+  name: emissions day
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/emissions/day?domain={{domain}}&date=2025-08-04
+  body: none
+  auth: none
+}
+
+params:query {
+  domain: {{domain}}
+  date: 2025-08-04
+  ~foo: bar
+}
