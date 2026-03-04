@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { validateQuery } from "common/middleware/validate-query-params";
+import { cacheInterceptor } from "@/services/emission/interceptor/emission-cache.interceptor";
 import { emissionsErrorInterceptor } from "../../services/emission/interceptor/emission-error-interceptor";
 import { dayQuerySchema } from "./schema/day";
 import { weekQuerySchema } from "./schema/week";
@@ -22,7 +23,7 @@ router.get("/day", validateQuery(dayQuerySchema), async (req, res, next) => {
   }
 });
 
-router.get("/week", validateQuery(weekQuerySchema), async (req, res, next) => {
+router.get("/week", validateQuery(weekQuerySchema), cacheInterceptor("week"), async (req, res, next) => {
   try {
     const { domain, date } = req.validatedQuery as WeekQuery;
     const response = await EmissionService.getWeek(domain, date);
@@ -36,6 +37,7 @@ router.get("/week", validateQuery(weekQuerySchema), async (req, res, next) => {
 router.get(
   "/month",
   validateQuery(monthQuerySchema),
+  cacheInterceptor("month"),
   async (req, res, next) => {
     try {
       const { domain, date } = req.validatedQuery as MonthQuery;

@@ -2,6 +2,7 @@ import MeasureAPI from "services/measure/api";
 import { logger } from "@/logger";
 import { calculateStats } from "@/lib/calculate-stats";
 import { getDateRange, isFutureDate } from "@/lib/date-utils";
+import EmissionsCache from "@/services/emission/emission-cache";
 
 export class FutureDateError extends Error {
   constructor(message = "Date must be in the past") {
@@ -34,6 +35,8 @@ export class EmissionService {
 
     const results = await this.fetchEmissionsForDates(domain, dates);
 
+    EmissionsCache.set(domain, startDate, 'week', calculateStats(results));
+
     return { ...calculateStats(results), dates, domain };
   }
 
@@ -49,6 +52,8 @@ export class EmissionService {
     logger.info({ domain, month, daysInMonth }, "Fetching month emissions");
 
     const results = await this.fetchEmissionsForDates(domain, dates);
+
+    EmissionsCache.set(domain, month, 'month', calculateStats(results));
 
     return { ...calculateStats(results), month, domain };
   }
