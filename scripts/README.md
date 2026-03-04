@@ -41,7 +41,7 @@ CONCURRENT=25 DURATION=60S bun run load-test
 | `/emissions/month` | `domain=yahoo.com&date=2025-08`    |
 
 ## Example Output
-
+Without cache
 ```
 Transactions:                 247    hits
 Availability:                 100.00 %
@@ -55,4 +55,20 @@ Successful transactions:      247
 Failed transactions:            0
 Longest transaction:          440.00 ms
 Shortest transaction:          70.00 ms
+```
+
+With cache
+```
+Transactions:                 606    hits
+Availability:                 100.00 %
+Elapsed time:                   5.94 secs
+Data transferred:               0.08 MB
+Response time:                 29.19 ms
+Transaction rate:             102.02 trans/sec
+Throughput:                     0.01 MB/sec
+Concurrency:                    2.98
+Successful transactions:      606
+Failed transactions:            0
+Longest transaction:          150.00 ms
+Shortest transaction:           0.00 ms
 ```
