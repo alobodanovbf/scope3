@@ -34,10 +34,11 @@ export class EmissionService {
     logger.info({ domain, startDate }, "Fetching week emissions");
 
     const results = await this.fetchEmissionsForDates(domain, dates);
+    const calculatedStats = calculateStats(results);
 
-    EmissionsCache.set(domain, startDate, 'week', calculateStats(results));
+    EmissionsCache.set(domain, startDate, 'week', calculatedStats);
 
-    return { ...calculateStats(results), dates, domain };
+    return { ...calculatedStats, dates, domain };
   }
 
   async getMonth(domain: string, month: string) {
@@ -52,10 +53,11 @@ export class EmissionService {
     logger.info({ domain, month, daysInMonth }, "Fetching month emissions");
 
     const results = await this.fetchEmissionsForDates(domain, dates);
+    const calculatedStats = calculateStats(results);
 
-    EmissionsCache.set(domain, month, 'month', calculateStats(results));
+    EmissionsCache.set(domain, month, 'month', calculatedStats);
 
-    return { ...calculateStats(results), month, domain };
+    return { ...calculatedStats, month, domain };
   }
 
   private async fetchEmissionsForDates(domain: string, dates: string[]) {
